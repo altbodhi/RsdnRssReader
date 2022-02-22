@@ -1,0 +1,5 @@
+ [ "dotnet",
+          "dotnet.gui",
+          "dotnet.web" ,
+          "nemerle" ,
+          "flame.comp" ]

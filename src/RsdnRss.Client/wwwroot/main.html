@@ -1,0 +1,74 @@
+<div class="columns">
+  <aside class="column sidebar is-narrow">
+    <section class="section">
+      <nav class="menu">
+        <ul class="menu-list">
+          ${Menu}
+          <template id="MenuItem">
+            <li><a class="${Active}" href="${Url}">${Text}</a></li>
+          </template>
+        </ul>
+      </nav>
+    </section>
+  </aside>
+  <div class="column">
+    <section class="section">
+      ${Body}
+
+      <div id="notification-area">
+        <div>${Error}</div>
+      </div>
+
+      <template id="Home">
+      </template>
+
+      <div>
+        ${Questions}
+        <template id="QuestionList">
+          <div class="content">
+            <h1 class="title"><i>${Title}</i></h1>
+            <table class="table is-bordered is-striped is-narrow is-hoverable">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Published</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${Rows}
+              </tbody>
+            </table>
+            ${Messages}
+          </div>
+        </template>
+      </div>
+
+    </section>
+  </div>
+</div>
+
+<template id="MessageList">
+  <div class="modal ${Class}">
+    <div class="modal-background"></div>
+    <div class="modal-content" style="width:fit-content">
+      <div class="box">
+        <h2 class="title"><i>${Title}</i></h2>
+        <table class="table is-bordered is-striped is-narrow is-hoverable">
+          <thead>
+            <tr>
+              <th>Author</th>
+              <th>Published</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${Rows}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="${CloseTalk}"></button>
+  </div>
+</template>
