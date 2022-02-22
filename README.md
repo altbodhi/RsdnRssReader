@@ -7,4 +7,4 @@
 и запустить dotnet --porject .\src\RsdnRss.Server
 перейти по адресу https://localhost:5001
 
-![Скриншот]("/RsdnRssReader/Screenshot.jpg" "Пример")
+![Скриншот](Screenshot.jpg "Пример")
