@@ -5,7 +5,9 @@
         <ul class="menu-list">
           ${Menu}
           <template id="MenuItem">
-            <li><a class="${Active}" href="${Url}">${Text}</a></li>
+            <li>
+              <a class="${Active}" href="${Url}">${Text}</a>
+            </li>
           </template>
         </ul>
       </nav>
@@ -25,21 +27,23 @@
       <div>
         ${Questions}
         <template id="QuestionList">
-          <div class="content">
-            <h1 class="title"><i>${Title}</i></h1>
-            <table class="table is-bordered is-striped is-narrow is-hoverable">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Author</th>
-                  <th>Published</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${Rows}
-              </tbody>
-            </table>
+          <div class="content" style="width:97%;">
+            <h1 class="title"><a target="_blank" href="${ForumLink}" class="button is-rounded"><i>${Title}</i></a></h1>
+            <div class="table-container">
+              <table class="table is-bordered is-striped is-narrow is-hoverable">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Published</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${Rows}
+                </tbody>
+              </table>
+            </div>
             ${Messages}
           </div>
         </template>
@@ -52,21 +56,23 @@
 <template id="MessageList">
   <div class="modal ${Class}">
     <div class="modal-background"></div>
-    <div class="modal-content" style="width:fit-content">
+    <div class="modal-content"  style="width:auto">
       <div class="box">
         <h2 class="title"><i>${Title}</i></h2>
-        <table class="table is-bordered is-striped is-narrow is-hoverable">
-          <thead>
-            <tr>
-              <th>Author</th>
-              <th>Published</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${Rows}
-          </tbody>
-        </table>
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-narrow is-hoverable">
+            <thead>
+              <tr>
+                <th>Author</th>
+                <th>Published</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${Rows}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <button class="modal-close is-large" aria-label="close" onclick="${CloseTalk}"></button>

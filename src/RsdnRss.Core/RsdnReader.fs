@@ -15,7 +15,7 @@ type Item =
       Author: string
       CommentRss: string }
 
-type Forum = { Title: string; Items: Item list }
+type Forum = {Id : string; Title: string; Items: Item list }
 
 type Asnwer =
     { Title: string
@@ -51,7 +51,7 @@ module RsdnReader =
 
           let tags = 
             data
-            |> Seq.filter (fun (txt,target) -> target.StartsWith("/forum"))
+            |> Seq.filter (fun (txt,target) -> target.StartsWith("/forum") &&  not (target.EndsWith("/list") || target.EndsWith("/mainlist")))
             |> Seq.map (fun (txt,target) -> { Id = target.Replace("/forum/",""); Title = txt})
             |> Seq.toList
 
@@ -67,7 +67,8 @@ module RsdnReader =
             let forumData =
                 data
                 |> (fun e ->
-                    { Title = e.Channel.Title
+                    { Id = id
+                      Title = e.Channel.Title
                       Items =
                         e.Channel.Items
                         |> Seq.map (fun i ->

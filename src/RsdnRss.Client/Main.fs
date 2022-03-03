@@ -156,6 +156,11 @@ let view model dispatch =
         .Questions(
             Main
                 .QuestionList()
+                .ForumLink(
+                    match model.currentForum with
+                    | None -> "https://rsdn.org/forum/list"
+                    | Some f -> $"https://rsdn.org/forum/{f.Id}"
+                )
                 .Title(
                     match model.currentForum with
                     | None -> "Выберите форум"
@@ -179,7 +184,7 @@ let view model dispatch =
                                     td [] [
                                         text (it.PubDate.ToString("dd\/MM HH:mm"))
                                     ]
-                                    td [] [ RawHtml it.Detail ]
+                                    td [attr.``style`` "width:fit-content"] [ RawHtml it.Detail ]
                                 ]
                 )
                 .Messages(talkView model dispatch)
