@@ -171,21 +171,22 @@ let view model dispatch =
                     <| function
                         | None -> tr [] [ text "Пусто" ]
                         | Some f ->
-                            forEach f.Items
-                            <| fun it ->
-                                tr [] [
-                                    td [] [
-                                        button [ attr.``class`` $"button is-outlined"
-                                                 on.click (fun _ -> dispatch (GetTalk it)) ] [
-                                            text it.Title
+                           
+                            let rows = 
+                                f.Items 
+                                |> List.map
+                                 (fun it ->
+                                    concat [tr [  ] [
+                                        td [] [
+                                                button [    attr.``class`` "button is-outlined";on.click (fun _ -> dispatch (GetTalk it)) ] [ text it.Title ]
                                         ]
-                                    ]
-                                    td [] [ text (it.Author.Split().[0]) ]
-                                    td [] [
-                                        text (it.PubDate.ToString("dd\/MM HH:mm"))
-                                    ]
-                                    td [attr.``style`` "width:fit-content"] [ RawHtml it.Detail ]
-                                ]
+                                        td [] [ text (it.Author.Split().[0]) ]
+                                        td [] [
+                                            text (it.PubDate.ToString("dd\/MM HH:mm"))
+                                        ]
+                                    ];
+                                     tr [] [ td [ attr.``colspan`` "3" ] [ RawHtml it.Detail ]]])
+                            concat rows
                 )
                 .Messages(talkView model dispatch)
                 .Elt()
