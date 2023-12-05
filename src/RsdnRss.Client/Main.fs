@@ -56,6 +56,10 @@ let update remote message model =
             { model with page = page }, Cmd.ofMsg (GetForum id)
     | GotForum forum ->
         do printfn $"GotForum {forum.Title}"
+
+        for e in forum.Items do
+            printfn $"{e.Title} {e.PubDate}"
+
         { model with currentForum = Some forum }, Cmd.none
     | GotForums ids -> { model with Forums = ids }, Cmd.none
     | GetForum id ->
@@ -73,8 +77,7 @@ let update remote message model =
         do printfn $"{exn}"
         model, Cmd.none
 
-let router =
-    Router.infer SetPage (fun model -> model.page)
+let router = Router.infer SetPage (fun model -> model.page)
 
 type Main = Template<"wwwroot/main.html">
 
@@ -83,12 +86,7 @@ let homePage model dispatch = Main.Home().Elt()
 let talkView (model: Model) dispatch =
     Main
         .MessageList()
-        .Class(
-            if model.currentTalk.IsSome then
-                "is-active"
-            else
-                ""
-        )
+        .Class(if model.currentTalk.IsSome then "is-active" else "")
         .Title(
             match model.currentTalk with
             | Some t -> t.Question.Title
@@ -98,17 +96,17 @@ let talkView (model: Model) dispatch =
         .Rows(
             cond model.currentTalk
             <| function
-                | None -> tr [] [ text "Пусто" ]
+                | None -> tr { text "Пусто" }
                 | Some f ->
                     forEach f.Asnwers
                     <| fun it ->
-                        tr [] [
-                            td [] [ text (it.Author.Split().[0]) ]
-                            td [] [
-                                text (it.PubDate.ToString("dd\/MM HH:mm"))
-                            ]
-                            td [] [ RawHtml it.Detail ]
-                        ]
+                        tr {
+                            td {
+                                attr.style "color:red" 
+                                text (it.Author.Split().[0]) }
+                            td { text (it.PubDate.ToString("dd\/MM HH:mm")) }
+                            td { rawHtml it.Detail }
+                        }
         )
         .Elt()
 
@@ -117,18 +115,10 @@ let menuItem (model: Model) (page: Page) (text: string) =
         .MenuItem()
         .Active(
             match page with
-            | Home ->
-                if model.page = page then
-                    "is-active"
-                else
-                    ""
+            | Home -> if model.page = page then "is-active" else ""
             | ForumId fp ->
                 match model.page with
-                | Home ->
-                    if model.page = page then
-                        "is-active"
-                    else
-                        ""
+                | Home -> if model.page = page then "is-active" else ""
                 | ForumId fm -> if fp = fm then "is-active" else ""
         )
         .Url(router.Link page)
@@ -136,16 +126,15 @@ let menuItem (model: Model) (page: Page) (text: string) =
         .Elt()
 
 let forumLinks (model: Model) =
-    model.Forums
-    |> List.map (fun t -> menuItem model (ForumId t.Id) t.Title)
+    model.Forums |> List.map (fun t -> menuItem model (ForumId t.Id) t.Title)
 
 let view model dispatch =
     Main()
         .Menu(
-            concat (
+            concat {
                 menuItem model Home "Update List"
-                :: forumLinks model
-            )
+                forEach (forumLinks model) <| id
+            }
         )
         .Body(
             cond model.page
@@ -169,29 +158,47 @@ let view model dispatch =
                 .Rows(
                     cond model.currentForum
                     <| function
-                        | None -> tr [] [ text "Пусто" ]
+                        | None -> tr { text "Пусто" }
                         | Some f ->
-                           
-                            let rows = 
-                                f.Items 
-                                |> List.map
-                                 (fun it ->
-                                    concat [tr [  ] [
-                                        td [] [
-                                                button [    attr.``class`` "button is-outlined";on.click (fun _ -> dispatch (GetTalk it)) ] [ text it.Title ]
-                                        ]
-                                        td [] [ text (it.Author.Split().[0]) ]
-                                        td [] [
-                                            text (it.PubDate.ToString("dd\/MM HH:mm"))
-                                        ]
-                                    ];
-                                     tr [] [ td [ attr.``colspan`` "3" ] [ RawHtml it.Detail ]]])
-                            concat rows
+
+                            let rows =
+                                f.Items
+                                |> List.map (fun it ->
+                                    concat {
+                                        tr {
+                                            td {
+                                                button {
+                                                    attr.``class`` "button is-outlined"
+                                                    attr.style "color:orange"
+                                                    on.click (fun _ -> dispatch (GetTalk it))
+                                                    text it.Title
+                                                }
+                                            }
+
+                                            td {
+                                                attr.style "color:blue"
+                                                text (it.Author.Split().[0])
+                                            }
+
+                                            td {
+                                                attr.style "color:red"
+                                                text (it.PubDate.ToString("dd\/MM HH:mm"))
+                                            }
+                                        }
+
+                                        tr {
+                                            td {
+                                                attr.colspan 3
+                                                rawHtml it.Detail
+                                            }
+                                        }
+                                    })
+
+                            concat { forEach rows <| id }
                 )
                 .Messages(talkView model dispatch)
                 .Elt()
         )
-
         .Elt()
 
 type MyApp() =

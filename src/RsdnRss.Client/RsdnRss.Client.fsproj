@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.fs" />
@@ -11,9 +11,9 @@
     <ProjectReference Include="..\RsdnRss.Core\RsdnRss.Core.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Bolero" Version="0.*" />
-    <PackageReference Include="Bolero.Build" Version="0.*" />
-    <PackageReference Include="Bolero.HotReload" Version="0.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.*" />
+    <PackageReference Include="Bolero" Version="*" />
+    <PackageReference Include="Bolero.Build" Version="*" />
+    <PackageReference Include="Bolero.HotReload" Version="*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="*" />
   </ItemGroup>
 </Project>
